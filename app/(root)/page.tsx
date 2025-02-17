@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
-import AddDocumentBtn from "../AddDocumentBtn";
+import AddDocumentBtn from "../../components/AddDocumentBtn";
 
 const Home = async () => {
   const clerkUser = await currentUser();
