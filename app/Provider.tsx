@@ -11,6 +11,7 @@ import { getClerkUsers } from "@/lib/actions/user.actions";
 const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <LiveblocksProvider
+      preventUnsavedChanges
       authEndpoint="/api/liveblocks-auth"
       resolveUsers={async ({ userIds }) => {
         const users = await getClerkUsers({ userIds });
