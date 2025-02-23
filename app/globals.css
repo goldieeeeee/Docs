@@ -214,8 +214,12 @@
 .lb-comment,
 .lb-thread-comments,
 .lb-composer,
+.lb-emoji-picker,
+.lb-emoji-picker-content,
 .lb-comment-reaction {
   background-color: #0f1c34;
+  /* background-color: yellow; */
+  /* color: red; */
   color: #fff;
 }
 
@@ -241,6 +245,14 @@
   ) {
   color: #b4c6ee;
 }
+
+.lb-button:where([data-variant="toolbar"]:not(:enabled:hover)) {
+  /* color: #b4c6ee8f; */
+  color: #b4c6ee9b;
+}
+/* .lb-button:where(:not([aria-selected="true"])) {
+  color: #b4c6ee70;
+} */
 
 .lb-button:where(
     :enabled:hover,
@@ -276,12 +288,31 @@
   font-size: 14px;
 }
 
+.lb-emoji-picker-search::placeholder {
+  color: #b4c6ee69;
+}
+
+/* .lb-icon-container * {
+  color: #b4c6ee69;
+  stroke: #b4c6ee69;
+}
+  /* color: #b4c6ee69; */
+/* stroke: #b4c6ee69; */
+
 .lb-comment-date,
 .lb-lexical-mention-suggestion-user,
 .lb-composer-suggestions-list-item,
 .lb-inbox-notification-date,
+.lb-emoji-picker-category-header-title,
+.lb-emoji-picker-search,
 .lb-comment-author {
   color: #b4c6ee;
+}
+
+.lb-emoji-picker-header *,
+.lb-comment-attachment *,
+.lb-composer-editor-container * {
+  color: #b4c6eee4;
 }
 
 .data-liveblocks-portal {
