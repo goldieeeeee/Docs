@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 import { liveblocks } from "../liveblocks";
 import { revalidatePath } from "next/cache";
 import { getAccessType, parseStringify } from "../utils";
+import { redirect } from "next/navigation";
 export const createDocument = async ({
   userId,
   email,
@@ -95,7 +96,20 @@ export const updateDocumentAccess = async ({
     const room = await liveblocks.updateRoom(roomId, { usersAccesses });
 
     if (room) {
-      // Trigger notification!
+      const notificationId = nanoid();
+      await liveblocks.triggerInboxNotification({
+        userId: email,
+        kind: "$documentAccess",
+        subjectId: notificationId,
+        activityData: {
+          userType,
+          title: `${updatedBy.name} shared their lovely document with you. Your awesome access type is ${userType}.`,
+          updatedBy: updatedBy.name,
+          avatar: updatedBy.avatar,
+          email: updatedBy.email,
+        },
+        roomId,
+      });
     }
 
     revalidatePath(`/documents/${roomId}`);
@@ -129,5 +143,15 @@ export const removeCollaborator = async ({
     return parseStringify(updatedRoom);
   } catch (error) {
     console.log("Error happened while removing document access: ", error);
+  }
+};
+
+export const deleteDocument = async (roomId: string) => {
+  try {
+    await liveblocks.deleteRoom(roomId);
+    revalidatePath("/");
+    redirect("/");
+  } catch (error) {
+    console.log(`Error while trying to delete room: ${roomId}`, error);
   }
 };
