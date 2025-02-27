@@ -10,8 +10,8 @@ import Provider from "./Provider";
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Goldie's island",
-  description: "Your favo(u)rite island",
+  title: "Goldie's Docs",
+  description: "Goldie's little document site.",
 };
 
 export default function RootLayout({
