@@ -26,15 +26,15 @@ const ShareModal = ({
 }: ShareDocumentDialogProps) => {
   const user = useSelf();
 
-  if (!user) {
-    return undefined;
-  }
-
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
   const [userType, setUserType] = useState<UserType>("viewer");
+
+  if (user === null) {
+    return undefined;
+  }
 
   const shareDocumentHandler = async () => {
     setLoading(true);
