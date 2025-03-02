@@ -315,6 +315,11 @@
   color: #b4c6eee4;
 }
 
+.lb-comment-link:not(:hover) {
+  color: rgb(33, 111, 219);
+  /* text-decoration: none; */
+}
+
 .data-liveblocks-portal {
   color: #b4c6ee !important;
 }
