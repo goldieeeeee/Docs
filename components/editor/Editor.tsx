@@ -8,8 +8,10 @@ import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { LinkNode } from "@lexical/link";
+import { ListNode, ListItemNode } from "@lexical/list";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ClickableLinkPlugin } from "@lexical/react/LexicalClickableLinkPlugin";
 import {
@@ -69,7 +71,7 @@ export function Editor({
   console.log(status);
   const initialConfig = liveblocksConfig({
     namespace: "Editor",
-    nodes: [HeadingNode, LinkNode, AutoLinkNode],
+    nodes: [HeadingNode, LinkNode, AutoLinkNode, ListNode, ListItemNode],
     onError: (error: Error) => {
       console.error(error);
       throw error;
@@ -114,6 +116,7 @@ export function Editor({
               <LinkPlugin validateUrl={validateUrl} />
               <AutoLinkPlugin matchers={MATCHERS} />
               <ClickableLinkPlugin />
+              <ListPlugin />
             </div>
           ) : (
             <Loader />

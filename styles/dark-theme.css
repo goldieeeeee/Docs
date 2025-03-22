@@ -267,12 +267,14 @@ body {
   padding: 0;
   margin: 0;
   margin-left: 16px;
+  list-style-type: decimal;
 }
 
 .editor-list-ul {
   padding: 0;
   margin: 0;
   margin-left: 16px;
+  list-style-type: disc;
 }
 
 .editor-listitem {
@@ -459,6 +461,13 @@ i.right-align {
 
 i.justify-align {
   background-image: url(/assets/icons/justify.svg);
+}
+
+i.unordered-list,
+i.ordered-list {
+  font-style: normal;
+  font-size: medium;
+  font-weight: 300;
 }
 
 i.h1 {
