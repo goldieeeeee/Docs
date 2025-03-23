@@ -35,7 +35,7 @@ const Document = async ({ params }: SearchParamProps) => {
     ? "editor"
     : "viewer";
 
-  console.log("room:", room);
+  // console.log("room:", room);
   return (
     <div className="flex w-full flex-col items-centere">
       <CollaborativeRoom

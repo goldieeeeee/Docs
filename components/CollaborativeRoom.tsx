@@ -32,7 +32,6 @@ const CollaborativeRoom = ({
       try {
         if (documentTitle !== roomMetadata.title) {
           const updatedDocument = await updateDocument(roomId, documentTitle);
-          console.log(updateDocument);
 
           if (updatedDocument) {
             setEditing(false);

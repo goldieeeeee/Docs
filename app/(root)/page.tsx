@@ -18,7 +18,7 @@ const Home = async () => {
     clerkUser.emailAddresses[0].emailAddress
   );
 
-  console.log("roomDocuments", roomDocuments);
+  // console.log("roomDocuments", roomDocuments);
 
   return (
     <main className="home-container">
