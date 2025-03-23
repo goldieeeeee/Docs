@@ -68,7 +68,6 @@ export function Editor({
   const status = useIsEditorReady();
   const { threads } = useThreads();
 
-  console.log(status);
   const initialConfig = liveblocksConfig({
     namespace: "Editor",
     nodes: [HeadingNode, LinkNode, AutoLinkNode, ListNode, ListItemNode],
