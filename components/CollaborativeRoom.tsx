@@ -45,6 +45,10 @@ const CollaborativeRoom = ({
   };
 
   useEffect(() => {
+    document.title = roomMetadata.title;
+  }, [roomMetadata.title]);
+
+  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
         containerRef.current &&
