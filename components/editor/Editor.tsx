@@ -20,13 +20,14 @@ import {
 } from "@lexical/react/LexicalAutoLinkPlugin";
 import { AutoLinkNode } from "@lexical/link";
 import {
+  AnchoredThreads,
   FloatingComposer,
   FloatingThreads,
   liveblocksConfig,
   LiveblocksPlugin,
   useIsEditorReady,
 } from "@liveblocks/react-lexical";
-import React from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Loader from "../Loader";
 import FloatingToolbarPlugin from "./plugins/FloatingToolbarPlugin";
 import { useThreads } from "@liveblocks/react/suspense";
@@ -68,6 +69,12 @@ export function Editor({
   const status = useIsEditorReady();
   const { threads } = useThreads();
 
+  const [scrollPosition, setScrollPosition] = useState(
+    localStorage.getItem("scrollPosition")
+      ? parseInt(localStorage.getItem("scrollPosition")!)
+      : 0
+  );
+
   const initialConfig = liveblocksConfig({
     namespace: "Editor",
     nodes: [HeadingNode, LinkNode, AutoLinkNode, ListNode, ListItemNode],
@@ -79,6 +86,8 @@ export function Editor({
     editable: currentUserType === "editor",
   });
 
+  const editorWrapperRef = useRef<HTMLDivElement | null>(null);
+
   const urlRegExp = new RegExp(
     /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/
   );
@@ -86,6 +95,40 @@ export function Editor({
   function validateUrl(url: string): boolean {
     return url === "https://" || urlRegExp.test(url);
   }
+
+  // Save scroll position on scroll
+  const handleScroll = () => {
+    if (editorWrapperRef.current) {
+      const position = editorWrapperRef.current.scrollTop;
+      setScrollPosition(position);
+      // console.log("position", position);
+      localStorage.setItem("scrollPosition", position.toString());
+    }
+  };
+
+  // Restore scroll position on mount
+  useLayoutEffect(() => {
+    if (status) {
+      requestAnimationFrame(() => {
+        // console.log("scrollPosition", scrollPosition);
+        if (editorWrapperRef.current) {
+          editorWrapperRef.current.scrollTop = scrollPosition;
+          // editorWrapperRef.current.scrollTo(0, 0);
+        }
+      });
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (editorWrapperRef.current) {
+      editorWrapperRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (editorWrapperRef.current) {
+        editorWrapperRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
@@ -95,7 +138,10 @@ export function Editor({
           {currentUserType === "editor" && <DeleteModal roomId={roomId} />}
         </div>
 
-        <div className="editor-wrapper flex flex-col items-center justify-start">
+        <div
+          ref={editorWrapperRef}
+          className="editor-wrapper flex flex-col items-center justify-start"
+        >
           {status ? (
             <div className="editor-inner lg:min-h-[1100px] relative mb-5 h-fit w-full max-w-[800px] shadow-md lg:mb-10">
               <RichTextPlugin
@@ -123,7 +169,14 @@ export function Editor({
 
           <LiveblocksPlugin>
             <FloatingComposer className="w-[350px]" />
-            <FloatingThreads threads={threads} />
+            <FloatingThreads
+              threads={threads}
+              className="w-[350px] block md:hidden"
+            />
+            <AnchoredThreads
+              threads={threads}
+              className="w-[350px] hidden sm:block"
+            />
             <Comments />
           </LiveblocksPlugin>
         </div>
