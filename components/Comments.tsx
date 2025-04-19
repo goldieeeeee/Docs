@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useIsThreadActive } from "@liveblocks/react-lexical";
+import { useIsThr } from "@liveblocks/react-tiptap";
 import { Composer, Thread } from "@liveblocks/react-ui";
 import { useThreads } from "@liveblocks/react/suspense";
 import React from "react";
