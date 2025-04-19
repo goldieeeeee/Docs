@@ -498,6 +498,10 @@
     margin-top: 0;
   }
 
+  p {
+    margin-bottom: 1em;
+  }
+
   /* List styles */
   ul,
   ol {
