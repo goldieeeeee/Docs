@@ -21,6 +21,7 @@ import { DeleteModal } from "../DeleteModal";
 import { ClientSideSuspense, useThreads } from "@liveblocks/react/suspense";
 import Loader from "../Loader";
 import { ThreadOverlay } from "../Threads";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export function Editor({
   roomId,
@@ -31,6 +32,11 @@ export function Editor({
 }) {
   const status = useIsEditorReady();
   const liveblocks = useLiveblocksExtension();
+  const [scrollPosition, setScrollPosition] = useState(
+    localStorage.getItem("scrollPosition")
+      ? parseInt(localStorage.getItem("scrollPosition")!)
+      : 0
+  );
 
   const editor = useEditor({
     editorProps: {
@@ -65,13 +71,48 @@ export function Editor({
 
   const { threads } = useThreads();
 
+  // Save scroll position on scroll
+  const handleScroll = () => {
+    if (editorWrapperRef.current) {
+      const position = editorWrapperRef.current.scrollTop;
+      setScrollPosition(position);
+      localStorage.setItem("scrollPosition", position.toString());
+    }
+  };
+
+  const editorWrapperRef = useRef<HTMLDivElement | null>(null);
+  // Restore scroll position on mount
+  useLayoutEffect(() => {
+    if (status) {
+      requestAnimationFrame(() => {
+        if (editorWrapperRef.current) {
+          editorWrapperRef.current.scrollTop = scrollPosition;
+        }
+      });
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (editorWrapperRef.current) {
+      editorWrapperRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      if (editorWrapperRef.current) {
+        editorWrapperRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <div className="editor-container size-full">
       <div className="toolbar-wrapper flex min-w-full justify-between">
         {/* <Toolbar editor={editor} /> */}
         {currentUserType === "editor" && <DeleteModal roomId={roomId} />}
       </div>
-      <div className="editor-wrapper flex flex-col items-center justify-start">
+      <div
+        className="editor-wrapper flex flex-col items-center justify-start"
+        ref={editorWrapperRef}
+      >
         {status ? (
           <div className="editor-inner lg:min-h-[1100px] relative mb-5 h-fit w-full max-w-[800px] shadow-md lg:mb-10">
             <EditorContent editor={editor} className="editor" />
