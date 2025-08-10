@@ -22,6 +22,7 @@ import { ClientSideSuspense, useThreads } from "@liveblocks/react/suspense";
 import Loader from "../Loader";
 import { ThreadOverlay } from "../Threads";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Mathematics } from "@tiptap/extension-mathematics";
 
 export function Editor({
   roomId,
@@ -64,6 +65,7 @@ export function Editor({
       TableCell,
       Image,
       Dropcursor,
+      Mathematics.configure({}),
     ],
     immediatelyRender: false,
     editable: currentUserType === "editor",
