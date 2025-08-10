@@ -66,9 +66,9 @@ export function Editor({
       TableCell,
       Image,
       Dropcursor,
-      MathExtension.configure({ evaluation: true }),
+      MathExtension.configure({ evaluation: false }),
     ],
-    immediatelyRender: false,
+    immediatelyRender: true,
     editable: currentUserType === "editor",
   });
 
