@@ -68,7 +68,7 @@ export function Editor({
       Dropcursor,
       MathExtension.configure({ evaluation: true }),
     ],
-    immediatelyRender: false,
+    immediatelyRender: true,
     editable: currentUserType === "editor",
   });
 
