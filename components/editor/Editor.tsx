@@ -33,7 +33,9 @@ export function Editor({
   currentUserType: UserType;
 }) {
   const status = useIsEditorReady();
-  const liveblocks = useLiveblocksExtension();
+  const liveblocks = useLiveblocksExtension({
+    offlineSupport_experimental: true,
+  });
   const [scrollPosition, setScrollPosition] = useState(
     localStorage.getItem("scrollPosition")
       ? parseInt(localStorage.getItem("scrollPosition")!)
